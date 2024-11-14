@@ -16,13 +16,19 @@ class Products extends Migration
             $table->string('name');
             $table->timestamps();
         });
+        Schema::create('statuses', function (Blueprint $table) {
+            $table->id();
+            $table->string('status');
+            $table->timestamps();
+        });
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('quantity');
             $table->integer('price');
             $table->timestamps();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
         });
     }
 
@@ -32,6 +38,8 @@ class Products extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('categories');
     }
 }
 
