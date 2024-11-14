@@ -1,47 +1,72 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+  <body class="bg-rose-500 flex justify-center items-center min-h-screen px-4 bg-[radial-gradient(at_center_bottom,#AD2B7B,#057AFD)]">
 
-    <form method="POST" action="{{ route('login') }}">
+    <main class="bg-black/40 text-white backdrop-blur-lg p-6 sm:p-12 space-y-3 shadow-lg rounded-xl w-full max-w-sm relative 
+      [&>div]:transition-all
+      [&>div]:duration-300
+      [&_label]:cursor-pointer
+      [&_label]:transition-all 
+      [&_label]:duration-300
+      hover:[&_label]:text-pink-500
+      hover:[&_:not(.field)>label]:underline">
+
+      <h1 class="font-bold text-lg grid [grid-template-areas:'stack']
+        *:[grid-area:stack]
+        *:transition-transform
+        *:duration-300
+        *:scale-0
+        *:origin-left
+                
+        peer-checked/radio-1:[&>span:nth-child(1)]:scale-100
+        peer-checked/radio-2:[&>span:nth-child(2)]:scale-100
+        peer-checked/radio-3:[&>span:nth-child(3)]:scale-100
+      ">
+        <span>Log In</span>
+      </h1>
+
+      <!-- Login Form -->
+      <form method="POST" action="{{ route('login') }}" class="grid space-y-4">
+
         @csrf
 
-        <!-- Username Address -->
-        <div>
-            <x-input-label for="username" :value="__('Username')" />
-            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('username')" class="mt-2" />
+        <!-- Username -->
+        <div class="field">
+          <label for="username">Username</label>
+          <x-text-input id="username" class="peer w-full py-3 px-5 rounded-md bg-black/30 text-white border-none outline-none ring-0 transition-all duration-300 focus:bg-black/60" type="text" name="username" :value="old('username')" required autofocus autocomplete="username"/>
+          <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="field">
+          <label for="password">Password</label>
+          <x-text-input id="password" class="peer w-full py-3 px-5 rounded-md bg-black/30 text-white border-none outline-none ring-0 transition-all duration-300 focus:bg-black/60" type="password" name="password" required autocomplete="current-password" />
+          <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
+        <!-- Login Button -->
+        <div class="flex justify-between items-center">
+          <x-primary-button class="w-full py-2 text-sm rounded-md text-white bg-sky-600/90 transition-all duration-300">
+            {{ __('Log in') }}
+          </x-primary-button>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <!-- Forgot Password and Register Links -->
+        <div class="flex justify-center space-x-4 mt-4">
+          <!-- Register Button -->
+          <a href="{{ route('register') }}" class="px-3 py-1 text-xs rounded-md text-white bg-cyan-600 hover:bg-cyan-700 transition-all duration-300">
+            {{ __('Register') }}
+          </a>
+          <!-- Forgot Password Link -->
+          @if (Route::has('password.request'))
+            <a class="text-indigo-600 hover:text-indigo-800 text-xs" href="{{ route('password.request') }}">
+              {{ __('Forgot your password?') }}
+            </a>
+          @endif
         </div>
-    </form>
+
+      </form>
+
+    </main>
+
+  </body>
 </x-guest-layout>
