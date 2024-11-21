@@ -5,6 +5,8 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Admin;
+use App\Http\Controllers\Admin\AdminDashboardController;
+
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -26,6 +28,12 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('/create', [IndexController::class, 'showCreate'])->name('showCreate');
+
+    Route::get('/edit', [IndexController::class, 'showEdit'])->name('showEdit');
+
+    Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
+        ->name('admin.dashboard');
+
 });
 
 require __DIR__.'/auth.php';

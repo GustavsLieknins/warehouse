@@ -26,12 +26,20 @@ class DatabaseSeeder extends Seeder
             ['status' => 'Available'],
         ]);
 
-        Category::create([
-            'name' => 'Furniture',
+        DB::table('transactions')->insert([
+            ['type' => 'Sale'],
+            ['type' => 'Purchase'],
+            ['type' => 'Restock']
         ]);
 
-        Category::create([
-            'name' => 'Tech',
+        DB::table('categories')->insert([
+            ['name' => 'Furniture'],
+            ['name' => 'Tech'],
+            ['name' => 'Sports'],
+            ['name' => 'Clothing'],
+            ['name' => 'Tools'],
+            ['name' => 'Car Parts'],
+            ['name' => 'Jewelery'],
         ]);
     }
 }

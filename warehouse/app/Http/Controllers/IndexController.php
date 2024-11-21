@@ -24,8 +24,10 @@ class IndexController extends Controller
         return view('index', compact('categories', 'products', 'totalProducts', 'lowStockItems', 'recentOrders'));
     }
     function showCreate()
+    
     {
         $categories = Category::all();
         return view('create', compact('categories'));    
     }
+    
 }

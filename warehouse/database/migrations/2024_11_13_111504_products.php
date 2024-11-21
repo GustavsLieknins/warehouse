@@ -21,15 +21,22 @@ class Products extends Migration
             $table->string('status');
             $table->timestamps();
         });
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->string('type');
+            
+        });
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('quantity');
             $table->integer('price');
             $table->timestamps();
-            $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
+            $table->foreignId(column: 'transaction_id')->constrained('transactions')->onDelete('cascade');
+            $table->foreignId(column: 'status_id')->constrained('statuses')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
         });
+        
     }
 
     /**
