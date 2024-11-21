@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\Admin;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -22,6 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/create', [ProductController::class, 'store'])->name('product.store');
 
     Route::get('/', [IndexController::class, 'index'])->name('index');
+});
+Route::middleware(['auth', 'Admin'])->group(function () {
+    Route::get('/create', [IndexController::class, 'showCreate'])->name('showCreate');
 });
 
 require __DIR__.'/auth.php';

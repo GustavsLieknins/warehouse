@@ -23,4 +23,9 @@ class IndexController extends Controller
         $recentOrders = Product::where('status_id', 1)->count();
         return view('index', compact('categories', 'products', 'totalProducts', 'lowStockItems', 'recentOrders'));
     }
+    function showCreate()
+    {
+        $categories = Category::all();
+        return view('showCreate', compact('categories'));    
+    }
 }
