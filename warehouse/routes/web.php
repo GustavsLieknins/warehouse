@@ -25,6 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/create', [ProductController::class, 'store'])->name('product.store');
 
     Route::get('/', [IndexController::class, 'index'])->name('index');
+
+
+    Route::get('/products', [ProductController::class, 'index'])->name('products');
+    Route::get('/lowStock', [ProductController::class, 'lowStock'])->name('lowStock');
+    Route::get('/ordered', [ProductController::class, 'ordered'])->name('ordered');
+
+    Route::get('/products/filter', [ProductController::class, 'indexFilter'])->name('products');
+
 });
 Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('/create', [IndexController::class, 'showCreate'])->name('showCreate');
