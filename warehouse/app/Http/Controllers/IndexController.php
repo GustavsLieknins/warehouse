@@ -26,6 +26,6 @@ class IndexController extends Controller
     function showCreate()
     {
         $categories = Category::all();
-        return view('showCreate', compact('categories'));    
+        return view('create', compact('categories'));    
     }
 }

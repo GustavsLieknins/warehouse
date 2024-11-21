@@ -4,18 +4,24 @@
             Inventory Dashboard
         </div>
         <div class="flex flex-row justify-center mt-20">
-            <div class="flex flex-col items-center mr-20">
-                <p class="text-2xl font-bold">Total Products</p>
-                <p class="text-6xl font-bold">{{ $totalProducts }}</p>
-            </div>
-            <div class="flex flex-col items-center mr-20">
-                <p class="text-2xl font-bold">Low Stock Items</p>
-                <p class="text-6xl font-bold">{{ $lowStockItems }}</p>
-            </div>
-            <div class="flex flex-col items-center">
-                <p class="text-2xl font-bold">Ordered products</p>
-                <p class="text-6xl font-bold">{{ $recentOrders }}</p>
-            </div>
+            <a href="">
+                <div class="flex flex-col items-center mr-20">
+                    <p class="text-2xl font-bold">Total Products</p>
+                    <p class="text-6xl font-bold">{{ $totalProducts }}</p>
+                </div>
+            </a>
+            <a href="">
+                <div class="flex flex-col items-center mr-20">
+                    <p class="text-2xl font-bold">Low Stock Items</p>
+                    <p class="text-6xl font-bold">{{ $lowStockItems }}</p>
+                </div>
+            </a>
+            <a href="">
+                <div class="flex flex-col items-center">
+                    <p class="text-2xl font-bold">Ordered products</p>
+                    <p class="text-6xl font-bold">{{ $recentOrders }}</p>
+                </div>
+            </a>
         </div>
     </div>
 </x-app-layout>
