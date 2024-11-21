@@ -34,5 +34,44 @@ class ProductController extends Controller
 
         return redirect()->route('index')->with('success', 'Product created successfully');
     }
+
+    public function index()
+    {
+        $products = Product::all();
+        $categories = Category::all();
+        return view('products.index', compact('products', 'categories'));
+    }
+
+    public function lowStock()
+    {
+        $lowStockItems = Product::where('quantity', '<', 5)->get();
+        return view('products.lowStock', compact('lowStockItems'));
+    }
+
+    public function ordered()
+    {
+        $orderedProducts = Product::where('status_id', 1)->get();
+        return view('products.ordered', compact('orderedProducts'));
+    }
+
+    
+    public function indexFilter(Request $request)
+    {
+        $filter = $request->filter;
+
+        if ($filter === 'available') {
+            $products = Product::where('status_id', 2)->get();
+        } elseif ($filter === 'ordered') {
+            $products = Product::where('status_id', 1)->get();
+        } elseif ($filter === 'low_stock') {
+            $products = Product::where('quantity', '<', 5)->get();
+        } else {
+            $products = Product::all();
+        }
+
+        $categories = Category::all();
+
+        return view('products.index', compact('products', 'categories'));
+    }
 }
 
