@@ -14,6 +14,7 @@ class Product extends Model
         'updated_at',
         'category_id',
         'status_id',
+        'transaction_id'
     ];
 }
 

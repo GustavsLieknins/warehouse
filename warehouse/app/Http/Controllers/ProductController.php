@@ -29,6 +29,7 @@ class ProductController extends Controller
             'category_id' => $request->category,
             'quantity' => $request->quantity,
             'price' => $request->price,
+            'transaction_id' => 2,
             'status_id' => 2
         ]);
 

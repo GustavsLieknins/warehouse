@@ -10,18 +10,8 @@
       hover:[&_label]:text-pink-500
       hover:[&_:not(.field)>label]:underline">
 
-      <h1 class="font-bold text-lg grid [grid-template-areas:'stack']
-        *:[grid-area:stack]
-        *:transition-transform
-        *:duration-300
-        *:scale-0
-        *:origin-left
-                
-        peer-checked/radio-1:[&>span:nth-child(1)]:scale-100
-        peer-checked/radio-2:[&>span:nth-child(2)]:scale-100
-        peer-checked/radio-3:[&>span:nth-child(3)]:scale-100
-      ">
-        <span>Log In</span>
+      <h1 class="font-bold text-lg grid grid-cols-1 place-items-center transition-transform duration-300 scale-100 origin-left peer-checked/radio-1:scale-100 peer-checked/radio-2:scale-100 peer-checked/radio-3:scale-100">
+        Log In
       </h1>
 
       <!-- Login Form -->
@@ -53,13 +43,13 @@
         <!-- Forgot Password and Register Links -->
         <div class="flex justify-center space-x-4 mt-4">
           <!-- Register Button -->
-          <a href="{{ route('register') }}" class="px-3 py-1 text-xs rounded-md text-white bg-cyan-600 hover:bg-cyan-700 transition-all duration-300">
+          <!-- <a href="{{ route('register') }}" class="px-3 py-1 text-xs rounded-md text-white bg-cyan-600 hover:bg-cyan-700 transition-all duration-300">
             {{ __('Register') }}
-          </a>
+          </a> -->
           <!-- Forgot Password Link -->
-          @if (Route::has('password.request'))
-            <a class="text-indigo-600 hover:text-indigo-800 text-xs" href="{{ route('password.request') }}">
-              {{ __('Forgot your password?') }}
+          @if (Route::has('register'))
+            <a class="text-indigo-600 hover:text-indigo-800 text-xs" href="{{ route('register') }}">
+              {{ __('Dont have an account?') }}
             </a>
           @endif
         </div>
