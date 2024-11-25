@@ -1,44 +1,39 @@
 <style>
-    @media (max-width: 425px) {
-        .container {
-            padding: 0 1rem;
-        }
-        .flex {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .flex > * {
-            width: 100% !important;
-            margin-bottom: 1rem;
-        }
-        .flex > *:last-child {
-            margin-bottom: 0;
-        }
-        table {
-            width: 100%;
-        }
-        thead {
-            display: none;
-        }
-        tbody tr {
-            display: block;
-        }
-        tbody td {
-            display: block;
-            width: 100%;
-        }
-        tbody td:not(:last-child) {
-            border-bottom: 1px solid #e2e8f0;
-        }
-        tbody td:first-child {
-            background-color: #f7fafc;
-            border-radius: 0.5rem 0.5rem 0 0;
-            padding: 0.5rem 1rem;
-        }
-        tbody td:last-child {
-            border-radius: 0 0 0.5rem 0.5rem;
-            padding: 0.5rem 1rem;
-        }
+    .modal-container {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        border-radius: 10px;
+    }
+
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
     }
 </style>
 
@@ -66,7 +61,9 @@
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Category</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Quantity</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Price</th>
+                    @if (Auth::user()->role == 1)
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Actions</th>
+                    @endif
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -88,6 +85,34 @@
     @endforeach
 </tbody>
         </table>
+        <div id="modal" class="modal-container">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p>Are you sure you want to delete the product?</p>
+                <form action="/delete" method="GET">
+                    @csrf
+                    <input type="hidden" id="delete-id" name="id">
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md">Yes, delete the product</button>
+                </form>
+            </div>
+        </div>
     </div>
 </x-app-layout>
+
+<script>
+    function openModal(id) {
+        document.getElementById("modal").style.display = "block";
+        document.getElementById("delete-id").value = id;
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("modal")) {
+            closeModal();
+        }
+    }
+</script>
 
