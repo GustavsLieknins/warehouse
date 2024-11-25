@@ -1,44 +1,38 @@
 <style>
-    @media (max-width: 425px) {
-        .container {
-            padding: 0 1rem;
-        }
-        .flex {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .flex > * {
-            width: 100% !important;
-            margin-bottom: 1rem;
-        }
-        .flex > *:last-child {
-            margin-bottom: 0;
-        }
-        table {
-            width: 100%;
-        }
-        thead {
-            display: none;
-        }
-        tbody tr {
-            display: block;
-        }
-        tbody td {
-            display: block;
-            width: 100%;
-        }
-        tbody td:not(:last-child) {
-            border-bottom: 1px solid #e2e8f0;
-        }
-        tbody td:first-child {
-            background-color: #f7fafc;
-            border-radius: 0.5rem 0.5rem 0 0;
-            padding: 0.5rem 1rem;
-        }
-        tbody td:last-child {
-            border-radius: 0 0 0.5rem 0.5rem;
-            padding: 0.5rem 1rem;
-        }
+    .modal-container {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
     }
 </style>
 
@@ -76,11 +70,44 @@
                     <td class="py-3 px-4 text-sm text-gray-900">{{ $categories[$product->category_id - 1]->name }}</td>
                     <td class="py-3 px-4 text-sm text-gray-900">{{ $product->quantity }}</td>
                     <td class="py-3 px-4 text-sm text-gray-900">${{ $product->price }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-900"><span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span><span class="ml-2 text-red-600"><a href="/delete/?id={{ $product->id }}">Delete</a></span></td>
+                    <td class="py-3 px-4 text-sm text-gray-900">
+                        <span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span>
+                        <span class="ml-2 text-red-600">
+                            <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
+                        </span>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+        <div id="modal" class="modal-container">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p>Are you sure you want to delete the product?</p>
+                <form action="/delete" method="GET">
+                    @csrf
+                    <input type="hidden" id="delete-id" name="id">
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md">Yes, delete the product</button>
+                </form>
+            </div>
+        </div>
     </div>
 </x-app-layout>
+
+<script>
+    function openModal(id) {
+        document.getElementById("modal").style.display = "block";
+        document.getElementById("delete-id").value = id;
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("modal")) {
+            closeModal();
+        }
+    }
+</script>
 
