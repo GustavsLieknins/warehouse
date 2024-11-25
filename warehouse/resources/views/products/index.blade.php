@@ -61,7 +61,9 @@
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Category</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Quantity</th>
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Price</th>
+                    @if (Auth::user()->role == 1)
                     <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Actions</th>
+                    @endif
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -71,12 +73,14 @@
                     <td class="py-3 px-4 text-sm text-gray-900">{{ $categories[$product->category_id - 1]->name }}</td>
                     <td class="py-3 px-4 text-sm text-gray-900">{{ $product->quantity }}</td>
                     <td class="py-3 px-4 text-sm text-gray-900">${{ $product->price }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-900">
-                        <span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span>
-                        <span class="ml-2 text-red-600">
-                            <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
-                        </span>
-                    </td>
+                        @if (Auth::user()->role == 1)
+                            <td class="py-3 px-4 text-sm text-gray-900">
+                                <span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span>
+                                <span class="ml-2 text-red-600">
+                                    <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
+                                </span>
+                            </td>
+                        @endif
                 </tr>
                 @endforeach
             </tbody>
