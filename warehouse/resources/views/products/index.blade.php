@@ -76,7 +76,7 @@
                     <td class="py-3 px-4 text-sm text-gray-900">{{ $categories[$product->category_id - 1]->name }}</td>
                     <td class="py-3 px-4 text-sm text-gray-900">{{ $product->quantity }}</td>
                     <td class="py-3 px-4 text-sm text-gray-900">${{ $product->price }}</td>
-                    <td class="py-3 px-4 text-sm text-gray-900"><span class="text-blue-600"><a href="">Edit</a></span><span class="ml-2 text-red-600"><a href="">Delete</a></span></td>
+                    <td class="py-3 px-4 text-sm text-gray-900"><span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span><span class="ml-2 text-red-600"><a href="/delete/?id={{ $product->id }}">Delete</a></span></td>
                 </tr>
                 @endforeach
             </tbody>

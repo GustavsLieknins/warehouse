@@ -37,7 +37,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('/create', [IndexController::class, 'showCreate'])->name('showCreate');
 
-    Route::get('/edit', [IndexController::class, 'showEdit'])->name('showEdit');
+    Route::get('/edit', [ProductController::class, 'edit'])->name('edit');
+    Route::post('/edit', [ProductController::class, 'update'])->name('update');
+    Route::get('/delete', [ProductController::class, 'destroy'])->name('delete');
 
     Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');

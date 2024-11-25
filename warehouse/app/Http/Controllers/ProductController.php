@@ -74,5 +74,41 @@ class ProductController extends Controller
 
         return view('products.index', compact('products', 'categories'));
     }
+
+public function edit(Request $request)
+{
+    $product = Product::findOrFail($request->id);
+    $categories = Category::all();
+    return view('edit', compact('product', 'categories'));
+}
+
+public function update(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'category' => 'required|integer|exists:categories,id',
+        'quantity' => 'required|integer|min:1',
+        'price' => 'required|integer|min:1'
+    ]);
+
+    $product = Product::findOrFail($request->id);
+    $product->update([
+        'name' => $request->name,
+        'category_id' => $request->category,
+        'quantity' => $request->quantity,
+        'price' => $request->price
+    ]);
+
+    return redirect()->route('products')->with('success', 'Product updated successfully');
+}
+
+public function destroy(Request $request)
+{
+    $product = Product::findOrFail($request->id);
+    $product->delete();
+
+    return redirect()->route('products')->with('success', 'Product deleted successfully');
+}
+
 }
 
