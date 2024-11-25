@@ -1,89 +1,64 @@
-@extends('layouts.app')
+<x-app-layout>
+    <div class="container mx-auto p-4">
+        <div class="bg-white p-4 rounded-md shadow-md">
+            <form action="{{ route('products.update', $product->id) }}" method="POST" class="space-y-4">
+                @csrf
+                @method('PUT')
 
-@section('content')
-<div class="container">
-    <h1>{{ isset($product) ? 'Edit Product' : 'Add Product' }}</h1>
-    
-    <form action="{{ isset($product) ? route('products.update', $product->id) : route('products.store') }}" method="POST">
-        @csrf
-        @if(isset($product))
-            @method('PUT')
-        @endif
+                @if ($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Error!</strong>
+                        <span class="block sm:inline">There were some problems with your input.</span>
+                        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-        <!-- Product Name -->
-        <div class="mb-3">
-            <label for="name" class="form-label">Product Name</label>
-            <input type="text" name="name" id="name" class="form-control" 
-                   value="{{ old('name', $product->name ?? '') }}" required>
+                <!-- Product Name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Product Name</label>
+                    <input type="text" name="name" id="name" class="form-control" 
+                           value="{{ old('name', $product->name ?? '') }}" required>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="category" id="category" class="form-select" required>
+                        <option value="" disabled>Select a category</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" 
+                                {{ old('category', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control" 
+                           value="{{ old('quantity', $product->quantity ?? '') }}" required min="1">
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" name="price" id="price" class="form-control" 
+                           value="{{ old('price', $product->price ?? '') }}" required min="1">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-right">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Update
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <!-- Product Title -->
-        <div class="mb-3">
-            <label for="title" class="form-label">Product Title</label>
-            <input type="text" name="title" id="title" class="form-control" 
-                   value="{{ old('title', $product->title ?? '') }}" required>
-        </div>
-
-        <!-- Category -->
-        <div class="mb-3">
-            <label for="category_id" class="form-label">Category</label>
-            <select name="category_id" id="category_id" class="form-select" required>
-                <option value="" disabled selected>Select a category</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}" 
-                            {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Transaction Type -->
-        <div class="mb-3">
-            <label for="transaction_id" class="form-label">Transaction Type</label>
-            <select name="transaction_id" id="transaction_id" class="form-select" required>
-                <option value="" disabled selected>Select a transaction type</option>
-                @foreach($transactions as $transaction)
-                    <option value="{{ $transaction->id }}" 
-                            {{ old('transaction_id', $product->transaction_id ?? '') == $transaction->id ? 'selected' : '' }}>
-                        {{ $transaction->type }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Status -->
-        <div class="mb-3">
-            <label for="status_id" class="form-label">Status</label>
-            <select name="status_id" id="status_id" class="form-select" required>
-                <option value="" disabled selected>Select a status</option>
-                @foreach($statuses as $status)
-                    <option value="{{ $status->id }}" 
-                            {{ old('status_id', $product->status_id ?? '') == $status->id ? 'selected' : '' }}>
-                        {{ $status->status }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Quantity -->
-        <div class="mb-3">
-            <label for="quantity" class="form-label">Quantity</label>
-            <input type="number" name="quantity" id="quantity" class="form-control" 
-                   value="{{ old('quantity', $product->quantity ?? '') }}" required>
-        </div>
-
-        <!-- Price -->
-        <div class="mb-3">
-            <label for="price" class="form-label">Price</label>
-            <input type="number" name="price" id="price" class="form-control" 
-                   value="{{ old('price', $product->price ?? '') }}" required>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">
-            {{ isset($product) ? 'Update Product' : 'Add Product' }}
-        </button>
-    </form>
-</div>
-@endsection
+    </div>
+</x-app-layout>
