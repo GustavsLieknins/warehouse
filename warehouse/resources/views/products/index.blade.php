@@ -67,22 +67,23 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-    @foreach ($products as $product)
+            @foreach ($products as $product)
     <tr class="hover:bg-gray-100">
         <td class="py-3 px-4 text-sm text-gray-900">{{ $product->name }}</td>
         <td class="py-3 px-4 text-sm text-gray-900">{{ $categories[$product->category_id - 1]->name }}</td>
         <td class="py-3 px-4 text-sm text-gray-900">{{ $product->quantity }}</td>
         <td class="py-3 px-4 text-sm text-gray-900">${{ $product->price }}</td>
-        <td class="py-3 px-4 text-sm text-gray-900">
-            <span class="text-blue-600">
-            <a href="{{ route('products.edit', ['id' => $product->id]) }}">Edit</a>
-            </span>
-            <span class="ml-2 text-red-600">
-                <a href="">Delete</a>
-            </span>
-        </td>
+        @if (Auth::user()->role == 1)
+                            <td class="py-3 px-4 text-sm text-gray-900">
+                                <span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span>
+                                <span class="ml-2 text-red-600">
+                                    <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
+                                </span>
+                            </td>
+                        @endif
     </tr>
     @endforeach
+</tbody>
 </tbody>
         </table>
         <div id="modal" class="modal-container">
