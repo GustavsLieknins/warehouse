@@ -46,6 +46,10 @@ Route::middleware(['auth', 'Admin'])->group(function () {
     Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
 
+    Route::get('/order', [ProductController::class, 'order'])->name('products.order');
+    
+    Route::post('/products/{id}/order', [ProductController::class, 'addOrder'])->name('products.order.form');
+
 });
 
-require __DIR__.'/auth.php';
+    require __DIR__.'/auth.php';

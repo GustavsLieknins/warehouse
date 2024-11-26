@@ -103,5 +103,31 @@ public function destroy(Request $request)
     return redirect()->route('products')->with('success', 'Product deleted successfully');
 }
 
+    
+    public function order(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+        return view('products.order', compact('product'));
+    }
+
+    
+    public function addOrder(Request $request)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        $product = Product::findOrFail($request->id);
+        
+        $product->decrement('quantity', $request->quantity);
+
+        Product::create([
+            'product_id' => $product->id,
+            'quantity' => $request->quantity,
+            'status_id' => 1
+        ]);
+
+        return redirect()->route('ordered')->with('success', 'Product ordered successfully');
+    }
 }
 

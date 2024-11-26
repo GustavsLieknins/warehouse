@@ -82,6 +82,7 @@
                                     <span class="ml-2 text-red-600">
                                         <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
                                     </span>
+                                    <span class="text-green-600 ml-2"><a href="/order/?id={{ $product->id }}">Order</a></span>
                                 </td>
                             @endif
                         </tr>
