@@ -38,13 +38,6 @@
                     </select>
                 </div>
 
-                <!-- Quantity -->
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Quantity</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control" 
-                           value="{{ old('quantity', $product->quantity ?? '') }}" required min="1">
-                </div>
-
                 <!-- Price -->
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>

@@ -82,7 +82,6 @@ public function update(Request $request)
     $request->validate([
         'name' => 'required|string|max:255',
         'category' => 'required|integer|exists:categories,id',
-        'quantity' => 'required|integer|min:1',
         'price' => 'required|integer|min:1'
     ]);
 
@@ -90,7 +89,6 @@ public function update(Request $request)
     $product->update([
         'name' => $request->name,
         'category_id' => $request->category,
-        'quantity' => $request->quantity,
         'price' => $request->price
     ]);
 
