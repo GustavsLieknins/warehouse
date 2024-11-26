@@ -19,6 +19,7 @@
         padding: 20px;
         border: 1px solid #888;
         width: 80%;
+        max-width: 400px;
         border-radius: 10px;
     }
 
@@ -35,6 +36,7 @@
         text-decoration: none;
         cursor: pointer;
     }
+    
 </style>
 
 <x-app-layout class="h-screen">
@@ -46,46 +48,47 @@
                 <div class="flex items-center">
                     <label for="category" class="mr-4">Category:</label>
                     <select name="filter" id="filter" class="border border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onchange="this.form.submit()">
-                        <option value="">All</option>
-                        <option value="available" {{ request()->query('filter') == 'available' ? 'selected' : '' }}>Available</option>
-                        <option value="ordered" {{ request()->query('filter') == 'ordered' ? 'selected' : '' }}>Ordered</option>
-                        <option value="low_stock" {{ request()->query('filter') == 'low_stock' ? 'selected' : '' }}>Low stock</option>
+                        <option value="0">All</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ request()->query('filter') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
         </form>
-        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Name</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Category</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Quantity</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Price</th>
-                    @if (Auth::user()->role == 1)
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Actions</th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-            @foreach ($products as $product)
-    <tr class="hover:bg-gray-100">
-        <td class="py-3 px-4 text-sm text-gray-900">{{ $product->name }}</td>
-        <td class="py-3 px-4 text-sm text-gray-900">{{ $categories[$product->category_id - 1]->name }}</td>
-        <td class="py-3 px-4 text-sm text-gray-900">{{ $product->quantity }}</td>
-        <td class="py-3 px-4 text-sm text-gray-900">${{ $product->price }}</td>
-        @if (Auth::user()->role == 1)
-                            <td class="py-3 px-4 text-sm text-gray-900">
-                                <span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span>
-                                <span class="ml-2 text-red-600">
-                                    <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
-                                </span>
-                            </td>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Name</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Category</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Quantity</th>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Price</th>
+                        @if (Auth::user()->role == 1)
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Actions</th>
                         @endif
-    </tr>
-    @endforeach
-</tbody>
-</tbody>
-        </table>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach ($products as $product)
+                        <tr class="hover:bg-gray-100">
+                            <td class="py-3 px-4 text-sm text-gray-900">{{ $product->name }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-900">{{ $categories[$product->category_id - 1]->name }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-900">{{ $product->quantity }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-900">${{ $product->price }}</td>
+                            @if (Auth::user()->role == 1)
+                                <td class="py-3 px-4 text-sm text-gray-900">
+                                    <span class="text-blue-600"><a href="/edit/?id={{ $product->id }}">Edit</a></span>
+                                    <span class="ml-2 text-red-600">
+                                        <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
+                                    </span>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         <div id="modal" class="modal-container">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
@@ -116,4 +119,3 @@
         }
     }
 </script>
-

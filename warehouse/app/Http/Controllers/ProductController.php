@@ -58,16 +58,11 @@ class ProductController extends Controller
     
     public function indexFilter(Request $request)
     {
-        $filter = $request->filter;
 
-        if ($filter === 'available') {
-            $products = Product::where('status_id', 2)->get();
-        } elseif ($filter === 'ordered') {
-            $products = Product::where('status_id', 1)->get();
-        } elseif ($filter === 'low_stock') {
-            $products = Product::where('quantity', '<', 5)->get();
-        } else {
+        if ($request->filter == 0) {
             $products = Product::all();
+        } else {
+            $products = Product::where('category_id',  $request->filter)->get();
         }
 
         $categories = Category::all();
