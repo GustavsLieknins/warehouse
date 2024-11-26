@@ -41,11 +41,13 @@ Route::middleware(['auth', 'Admin'])->group(function () {
 
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
 
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
     Route::get('/delete', [ProductController::class, 'destroy'])->name('delete');
 
     Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
-
 });
+
 
 require __DIR__.'/auth.php';
