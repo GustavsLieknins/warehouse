@@ -32,21 +32,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/ordered', [ProductController::class, 'ordered'])->name('ordered');
 
     Route::get('/products/filter', [ProductController::class, 'indexFilter'])->name('products');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/order', [ProductController::class, 'order'])->name('order');
+
+    Route::post('/products/{id}/order', [ProductController::class, 'addOrder'])->name('products.order.form');
 
 });
 Route::middleware(['auth', 'Admin'])->group(function () {
-    Route::get('/create', [IndexController::class, 'showCreate'])->name('showCreate');
+    Route::get('/create', [ProductController::class, 'createIndex'])->name('showCreate');
 
     Route::get('/edit', [ProductController::class, 'edit'])->name('products.edit');
 
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
 
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
     Route::get('/delete', [ProductController::class, 'destroy'])->name('delete');
 
     Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
+
+                Route::get('admin/actions', function () {
+                    $actions = \App\Models\Actions::all();
+
+                    return view('actions', compact('actions'));
+                })->name('admin.actions');
+
+    Route::post('/products/{id}/delivered', [ProductController::class, 'delivered'])->name('products.delivered');
+    
 });
 
 

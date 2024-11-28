@@ -72,7 +72,9 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach ($products as $product)
                         <tr class="hover:bg-gray-100">
-                            <td class="py-3 px-4 text-sm text-gray-900">{{ $product->name }}</td>
+                            <td class="py-3 px-4 text-sm text-gray-900">
+                                <a href="{{ route('products.show', ['id' => $product->id]) }}" class="text-blue-600">{{ $product->name }}</a>
+                            </td>
                             <td class="py-3 px-4 text-sm text-gray-900">{{ $categories[$product->category_id - 1]->name }}</td>
                             <td class="py-3 px-4 text-sm text-gray-900">{{ $product->quantity }}</td>
                             <td class="py-3 px-4 text-sm text-gray-900">${{ $product->price }}</td>
@@ -82,6 +84,7 @@
                                     <span class="ml-2 text-red-600">
                                         <button type="button" onclick="openModal({{ $product->id }})" class="text-red-600">Delete</button>
                                     </span>
+                                    <span class="text-green-600 ml-2"><a href="/order/?id={{ $product->id }}">Order</a></span>
                                 </td>
                             @endif
                         </tr>

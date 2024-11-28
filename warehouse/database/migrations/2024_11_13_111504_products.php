@@ -36,6 +36,14 @@ class Products extends Migration
             $table->foreignId(column: 'status_id')->constrained('statuses')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
         });
+        Schema::create('actions', function (Blueprint $table) {
+            $table->id();
+            $table->string('action');
+            $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('cascade');
+            $table->string('entity');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->timestamps();
+        });
         
     }
 

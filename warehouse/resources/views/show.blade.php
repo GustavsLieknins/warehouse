@@ -6,7 +6,7 @@
                 <strong>Name:</strong> {{ $product->name }}
             </div>
             <div class="mb-3">
-                <strong>Category:</strong> {{ $category->}}
+                <strong>Category:</strong> {{ $categories[$product->category_id]->name }}
             </div>
             <div class="mb-3">
                 <strong>Quantity:</strong> {{ $product->quantity }}
@@ -15,7 +15,7 @@
                 <strong>Price:</strong> ${{ $product->price }}
             </div>
             <div>
-                <a href="{{ route('products.index') }}" class="text-blue-600">Back to Products</a>
+                <a href="{{ route('products') }}" class="text-blue-600">Back to Products</a>
             </div>
         </div>
     </div>

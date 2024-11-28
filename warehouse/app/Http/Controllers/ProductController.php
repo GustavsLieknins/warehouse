@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
-
+use App\Models\Actions;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -33,12 +33,14 @@ class ProductController extends Controller
             'status_id' => 2
         ]);
 
+        Actions::log('created', $product->id, 'product', $request->user()->id);
+
         return redirect()->route('index')->with('success', 'Product created successfully');
     }
 
     public function index()
     {
-        $products = Product::all();
+        $products = Product::where('status_id', 2)->get();
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
@@ -60,9 +62,11 @@ class ProductController extends Controller
     {
 
         if ($request->filter == 0) {
-            $products = Product::all();
+            $products = Product::where('status_id', 2)->get();
         } else {
-            $products = Product::where('category_id',  $request->filter)->get();
+            $products = Product::where('category_id', $request->filter)
+                               ->where('status_id', 2)
+                               ->get();
         }
 
         $categories = Category::all();
@@ -92,6 +96,8 @@ public function update(Request $request)
         'price' => $request->price
     ]);
 
+    Actions::log('updated', $product->id, 'product', $request->user()->id);
+
     return redirect()->route('products')->with('success', 'Product updated successfully');
 }
 
@@ -99,6 +105,7 @@ public function destroy(Request $request)
 {
     $product = Product::findOrFail($request->id);
     $product->delete();
+    Actions::log('deleted', null, 'product', $request->user()->id);
 
     return redirect()->route('products')->with('success', 'Product deleted successfully');
 }
@@ -119,15 +126,65 @@ public function destroy(Request $request)
 
         $product = Product::findOrFail($request->id);
         
-        $product->decrement('quantity', $request->quantity);
 
         Product::create([
-            'product_id' => $product->id,
+            'transaction_id' => 3,
+            'name' => $product->name,
+            'price' => $product->price,
             'quantity' => $request->quantity,
+            'category_id' => $product->category_id,
             'status_id' => 1
         ]);
 
+        Actions::log('ordered', $product->id, 'product', $request->user()->id);
+
         return redirect()->route('ordered')->with('success', 'Product ordered successfully');
     }
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+        return view('show', compact('product', 'categories'));
+    }
+
+    
+    public function delivered(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $existingProduct = Product::where('name', $product->name)->where('status_id', 2)->first();
+
+        if ($existingProduct) {
+            $existingProduct->increment('quantity', $product->quantity);
+        } else {
+            $product->update(['status_id' => 2]);
+        }
+
+        Actions::log('delivered', $product->id, 'product', $request->user()->id);
+
+        $product->delete();
+
+        return redirect()->route('ordered')->with('success', 'Product marked as delivered successfully');
+    }
+
+// public function addOrder(Request $request)
+// {
+//     $request->validate([
+//         'quantity' => 'required|integer|min:1'
+//     ]);
+
+//     $product = Product::findOrFail($request->id);
+    
+//     $product->decrement('quantity', $request->quantity);
+
+//     // Assuming there is an Order model to record the order
+//     Order::create([
+//         'product_id' => $product->id,
+//         'quantity' => $request->quantity,
+//         'status_id' => 1
+//     ]);
+
+//     return redirect()->route('ordered')->with('success', 'Product ordered successfully');
+// }
 }
 
