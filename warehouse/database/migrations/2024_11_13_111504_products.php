@@ -30,7 +30,7 @@ class Products extends Migration
             $table->id();
             $table->string('name');
             $table->integer('quantity');
-            $table->integer('price');
+            $table->decimal('price', 10, 2);
             $table->timestamps();
             $table->foreignId(column: 'transaction_id')->constrained('transactions')->onDelete('cascade');
             $table->foreignId(column: 'status_id')->constrained('statuses')->onDelete('cascade');

@@ -10,9 +10,14 @@
                     </a>
                 </div>
 
-                <!-- Header Text (Inventory List) -->
+                <!-- Links -->
                 <div class="hidden sm:flex items-center ml-10 text-2xl font-semibold text-white tracking-wide">
-                    {{ __('Inventory List') }}
+                    <!-- <a href="{{ route('products') }}" class="text-white hover:text-gray-300 mx-3">All Products</a> -->
+                    <a href="{{ route('lowStock') }}" class="text-white hover:text-gray-300 mx-3">Low Stock</a>
+                        <a href="{{ route('ordered') }}" class="text-white hover:text-gray-300 mx-3">Ordered Products</a>
+                    @if (Auth::user()->role == 1)
+                        <a href="{{ route('showCreate') }}" class="text-white hover:text-gray-300 mx-3">Create Product</a>
+                    @endif
                 </div>
             </div>
 
@@ -65,10 +70,24 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-blue-500 text-white">
         <div class="pt-2 pb-3 space-y-1">
-            <!-- Link for Inventory List (same as header) -->
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Inventory List') }}
+            <!-- Links -->
+            <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
+                {{ __('Home') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('products')" :active="request()->routeIs('products')">
+                {{ __('All Products') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('lowStock')" :active="request()->routeIs('lowStock')">
+                {{ __('Low Stock') }}
+            </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('ordered')" :active="request()->routeIs('ordered')">
+                    {{ __('Ordered Products') }}
+                </x-responsive-nav-link>
+            @if (Auth::user()->role == 1)
+            <x-responsive-nav-link :href="route('showCreate')" :active="request()->routeIs('showCreate')">
+                {{ __('Create Product') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -97,3 +116,4 @@
         </div>
     </div>
 </nav>
+

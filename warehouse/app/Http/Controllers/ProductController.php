@@ -20,8 +20,8 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|integer|exists:categories,id',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1|max:10000',
+            'price' => 'required|numeric|min:0|max:1000000'
         ]);
 
         $product = Product::create([
@@ -86,14 +86,16 @@ public function update(Request $request)
     $request->validate([
         'name' => 'required|string|max:255',
         'category' => 'required|integer|exists:categories,id',
-        'price' => 'required|integer|min:1'
+        'quantity' => 'required|integer|min:1|max:10000',
+        'price' => 'required|numeric|min:0|max:1000000'
     ]);
 
     $product = Product::findOrFail($request->id);
     $product->update([
         'name' => $request->name,
         'category_id' => $request->category,
-        'price' => $request->price
+        'price' => $request->price,
+        'quantity' => $request->quantity
     ]);
 
     Actions::log('updated', $product->id, 'product', $request->user()->id);
@@ -104,12 +106,33 @@ public function update(Request $request)
 public function destroy(Request $request)
 {
     $product = Product::findOrFail($request->id);
+    $orders = Product::where('name', $product->name)->get();
     $product->delete();
+    foreach ($orders as $order) {
+        $order->delete();
+    }
     Actions::log('deleted', null, 'product', $request->user()->id);
 
     return redirect()->route('products')->with('success', 'Product deleted successfully');
 }
+// public function delivered(Request $request, $id)
+// {
+//     $product = Product::findOrFail($id);
 
+//     $existingProduct = Product::where('name', $product->name)->where('status_id', 2)->first();
+
+//     if ($existingProduct) {
+//         $existingProduct->increment('quantity', $product->quantity);
+//     } else {
+//         $product->update(['status_id' => 2]);
+//     }
+
+//     Actions::log('delivered', $product->id, 'product', $request->user()->id);
+
+//     $product->delete();
+
+//     return redirect()->route('ordered')->with('success', 'Product marked as delivered successfully');
+// }
     
     public function order(Request $request)
     {

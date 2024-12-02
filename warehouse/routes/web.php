@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/create', [ProductController::class, 'createIndex'])->name('create');
+    // Route::get('/create', [ProductController::class, 'createIndex'])->name('create');
     Route::post('/create', [ProductController::class, 'store'])->name('product.store');
 
     Route::get('/', [IndexController::class, 'index'])->name('index');
@@ -52,7 +52,7 @@ Route::middleware(['auth', 'Admin'])->group(function () {
         ->name('admin.dashboard');
 
                 Route::get('admin/actions', function () {
-                    $actions = \App\Models\Actions::all();
+                    $actions = \App\Models\Actions::orderBy('created_at', 'desc')->get();
 
                     return view('actions', compact('actions'));
                 })->name('admin.actions');

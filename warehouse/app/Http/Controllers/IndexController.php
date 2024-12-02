@@ -18,14 +18,14 @@ class IndexController extends Controller
     {
         $categories = Category::all();
         $products = Product::all();
-        $totalProducts = Product::Count();
-        $lowStockItems = Product::where('quantity', '<', 5)->count();
+        $totalProducts = Product::where('status_id', 2)->count();
+        $lowStockItems = Product::where('quantity', '<', 5)->where('status_id', 2)->count();
         $recentOrders = Product::where('status_id', 1)->count();
         return view('index', compact('categories', 'products', 'totalProducts', 'lowStockItems', 'recentOrders'));
     }
     public function showCreate()
     {
-        return "hi";
+        // return "hi";
         $categories = Category::all();
         return view('create', compact('categories'));    
     }

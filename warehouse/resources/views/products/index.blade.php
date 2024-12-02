@@ -104,6 +104,16 @@
             </div>
         </div>
     </div>
+    @if (session('success'))
+        <div id="success-alert" class="fixed top-0 right-0 mt-5 mr-5 bg-green-500 text-white font-bold rounded p-4" role="alert">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('success-alert').remove();
+            }, 3000);
+        </script>
+    @endif
 </x-app-layout>
 
 <script>
